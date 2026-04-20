@@ -1,0 +1,60 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/game.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/entities/player.tscn" id="2"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+stretch_mode = 6
+
+[node name="Player" parent="." instance=ExtResource("2")]
+position = Vector2(640, 360)
+
+[node name="Collectibles" type="Node2D" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="CountdownTimer" type="Timer" parent="."]
+wait_time = 1.0
+
+[node name="EnemySpawnTimer" type="Timer" parent="."]
+wait_time = 5.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="MarginContainer" parent="CanvasLayer"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 1272.0
+offset_bottom = 96.0
+
+[node name="TopRow" type="HBoxContainer" parent="CanvasLayer/UI"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="LevelLabel" type="Label" parent="CanvasLayer/UI/TopRow"]
+layout_mode = 2
+text = "المستوى"
+
+[node name="ScoreLabel" type="Label" parent="CanvasLayer/UI/TopRow"]
+layout_mode = 2
+text = "نقاط المستوى: 0"
+
+[node name="AttemptsLabel" type="Label" parent="CanvasLayer/UI/TopRow"]
+layout_mode = 2
+text = "محاولات: 5"
+
+[node name="TimerLabel" type="Label" parent="CanvasLayer/UI/TopRow"]
+layout_mode = 2
+text = "الوقت: 0"
+
+[node name="TimeProgress" type="ProgressBar" parent="CanvasLayer/UI/TopRow"]
+custom_minimum_size = Vector2(260, 24)
+layout_mode = 2
+value = 100.0
+show_percentage = false
