@@ -1,0 +1,5 @@
+# Godot temporary/editor files
+.godot/
+
+# Keep repository text-only for this task
+Assets/Audio/*.wav
