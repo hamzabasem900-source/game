@@ -1,0 +1,5 @@
+res://Scenes/cheese.tscn
+res://Scenes/level_1.tscn
+res://Scripts/cheese.gd
+res://Scenes/level_1.gd
+res://Scripts/level_1.gd
