@@ -92,11 +92,9 @@ func _draw_connecting_lines() -> void:
 		# تحديد لون الخط بناء على حالة المستوى
 		var line_color: Color
 		if GameState.unlocked_level > i:
-			line_color = Color(1.0, 0.84, 0.20)  # اصفر فاتح
-		elif GameState.unlocked_level == i:
-			line_color = Color(1.0, 0.92, 0.42)  # اصفر اقوى
+			line_color = Color(0.30, 0.85, 0.40)  # اخضر للمسار المكتمل
 		else:
-			line_color = Color(0.36, 0.40, 0.52)  # رمادي مزرق
+			line_color = Color(1.0, 0.86, 0.22)  # اصفر لباقي المسار
 		
 		var curve_points := PackedVector2Array([start_pos, mid, end_pos])
 		draw_polyline(curve_points, Color(0.02, 0.04, 0.12, 0.45), LINE_WIDTH + 4.0)
@@ -115,15 +113,9 @@ func _draw_level_buttons() -> void:
 		var is_hovered = i == hovered_level
 		
 		# تحديد لون الزر
-		var button_color: Color
-		if is_locked:
-			button_color = Color(0.36, 0.40, 0.48)  # رمادي مزرق (مقفول)
-		elif is_completed:
-			button_color = Color(0.18, 0.82, 0.72)  # تركواز (مكتمل)
-		elif is_current:
-			button_color = Color(1.0, 0.63, 0.22)  # برتقالي ذهبي (المستوى الحالي)
-		else:
-			button_color = Color(0.35, 0.66, 1.0)  # ازرق مشرق (متاح)
+		var button_color: Color = Color(1.0, 0.86, 0.22)  # اصفر افتراضي
+		if is_completed:
+			button_color = Color(0.28, 0.83, 0.38)  # اخضر للمكتمل
 		
 		# تطبيق تأثير المرور فوق الزر
 		var scale_factor = 1.0
@@ -143,7 +135,7 @@ func _draw_level_buttons() -> void:
 		draw_circle(pos, scaled_radius + pulse, button_color)
 		
 		# رسم حد الزر
-		var border_color = Color(1.0, 0.86, 0.28) if is_hovered else Color(0.55, 0.72, 0.95)
+		var border_color = Color(1.0, 0.95, 0.55) if is_hovered else Color(0.88, 0.72, 0.05)
 		var border_width = 3.0 if is_hovered else 2.0
 		draw_circle(pos, scaled_radius + pulse, border_color, border_width)
 		
@@ -153,9 +145,9 @@ func _draw_level_buttons() -> void:
 		if not font:
 			font = ThemeDB.fallback_font
 		var font_size = 36
-		var text_size = font.get_string_size(level_number, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size)
-		var text_pos = pos - text_size / 2
-		draw_string(font, text_pos, level_number, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size, Color(0.07, 0.12, 0.22, 1))
+		var text_size = font.get_string_size(level_number, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
+		var text_pos = pos + Vector2(-text_size.x / 2.0, text_size.y / 2.7)
+		draw_string(font, text_pos, level_number, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color(0.07, 0.12, 0.22, 1))
 		
 		# إضافة أيقونة الحالة
 		if is_locked:
@@ -169,17 +161,28 @@ func _draw_lock_icon(pos: Vector2) -> void:
 	var font = get_theme_font("font")
 	if not font:
 		font = ThemeDB.fallback_font
-	draw_string(font, pos + Vector2(-11, 14), "🔒", HORIZONTAL_ALIGNMENT_LEFT, -1, 24, Color(0.95, 0.84, 0.28, 1))
+	draw_string(font, pos + Vector2(-11, 9), "🔒", HORIZONTAL_ALIGNMENT_LEFT, -1, 24, Color(0.25, 0.2, 0.08, 1))
 
 func _draw_checkmark(pos: Vector2) -> void:
-	# رسم علامة صح بسيطة
-	var check_size = 15.0
-	var check_start = pos - Vector2(check_size/3, 0)
-	var check_mid = pos + Vector2(0, check_size/3)
-	var check_end = pos + Vector2(check_size/2, -check_size/3)
+	# رسم علامة صح واضحة في منتصف الدائرة
+	var check_size = 18.0
+	var check_start = pos + Vector2(-check_size * 0.45, 0)
+	var check_mid = pos + Vector2(-check_size * 0.12, check_size * 0.35)
+	var check_end = pos + Vector2(check_size * 0.48, -check_size * 0.32)
 	
-	draw_line(check_start, check_mid, Color(0, 1, 0), 2.5)
-	draw_line(check_mid, check_end, Color(0, 1, 0), 2.5)
+	draw_line(check_start, check_mid, Color(0.02, 0.35, 0.08, 0.9), 5.0)
+	draw_line(check_mid, check_end, Color(0.02, 0.35, 0.08, 0.9), 5.0)
+	draw_line(check_start, check_mid, Color(0.85, 1.0, 0.88, 1), 2.8)
+	draw_line(check_mid, check_end, Color(0.85, 1.0, 0.88, 1), 2.8)
+
+func _draw_pin_icon(pos: Vector2) -> void:
+	draw_circle(pos, 10, Color(1, 0.2, 0.28, 1))
+	draw_circle(pos, 4, Color(1, 1, 1, 0.95))
+	draw_polygon(PackedVector2Array([
+		pos + Vector2(0, 18),
+		pos + Vector2(-6, 8),
+		pos + Vector2(6, 8)
+	]), [Color(1, 0.2, 0.28, 1)])
 
 func _draw_pin_icon(pos: Vector2) -> void:
 	draw_circle(pos, 10, Color(1, 0.2, 0.28, 1))
