@@ -8,10 +8,12 @@ extends Node
 
 const START_SFX_PATHS := [
 	"res://audio/start.mp3",
+	"res://audio/Start.mp3",
 	"res://audio/start.wav"
 ]
 const GAMEPLAY_SFX_PATHS := [
 	"res://audio/food.mp3",
+	"res://audio/pickup.mp3",
 	"res://audio/gameplay.wav"
 ]
 const WIN_SFX_PATHS := [
@@ -25,6 +27,7 @@ const GAME_OVER_SFX_PATHS := [
 ]
 const BGM_PATHS := [
 	"res://audio/gamesound.mp3",
+	"res://audio/game_sound.mp3",
 	"res://audio/game_music.mp3"
 ]
 
@@ -45,6 +48,7 @@ func _ready() -> void:
 	gameplay_player.stream = _load_first_existing(GAMEPLAY_SFX_PATHS)
 	win_player.stream = _load_first_existing(WIN_SFX_PATHS)
 	game_over_player.stream = _load_first_existing(GAME_OVER_SFX_PATHS)
+	_log_missing_streams()
 
 func play_start() -> void:
 	_play_if_exists(start_player)
@@ -74,4 +78,18 @@ func _load_first_existing(paths: Array) -> AudioStream:
 
 func _play_if_exists(player: AudioStreamPlayer) -> void:
 	if player.stream:
+		if player.playing:
+			player.stop()
 		player.play()
+
+func _log_missing_streams() -> void:
+	if not start_player.stream:
+		push_warning("AudioManager: start sound not found in res://audio/")
+	if not gameplay_player.stream:
+		push_warning("AudioManager: collectible sound not found in res://audio/")
+	if not win_player.stream:
+		push_warning("AudioManager: win sound not found in res://audio/")
+	if not game_over_player.stream:
+		push_warning("AudioManager: game over sound not found in res://audio/")
+	if not bgm_player.stream:
+		push_warning("AudioManager: background music not found in res://audio/")

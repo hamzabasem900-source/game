@@ -6,5 +6,6 @@
 - `win.mp3` : صوت الفوز.
 - `game over.mp3` أو `game_over.mp3` : صوت الخسارة.
 - `gamesound.mp3` : موسيقى الخلفية داخل اللعب.
+- بدائل مدعومة: `Start.mp3`, `pickup.mp3`, `game_sound.mp3`.
 
 > ملاحظة: السكربت يدعم أيضًا fallback لبعض الملفات القديمة بصيغة wav.
