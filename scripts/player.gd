@@ -1,6 +1,11 @@
 extends CharacterBody2D
 
 @export var move_speed: float = 250.0
+@export var player_texture_path: String = "res://assets/sprites/rocket.png"
+
+func _ready() -> void:
+	_ensure_input_bindings()
+	_apply_visual()
 
 func _ready() -> void:
 	_ensure_input_bindings()
@@ -36,3 +41,20 @@ func _bind_key(action: StringName, key: Key) -> void:
 	var input_event := InputEventKey.new()
 	input_event.keycode = key
 	InputMap.action_add_event(action, input_event)
+
+func _apply_visual() -> void:
+	var sprite: Sprite2D = $Sprite2D
+	var fallback_body: Polygon2D = $Body
+	if ResourceLoader.exists(player_texture_path):
+		var texture := load(player_texture_path) as Texture2D
+		if texture:
+			sprite.texture = texture
+			var base_size = max(texture.get_size().x, texture.get_size().y)
+			var target_size = 56.0
+			var scale_factor = target_size / max(1.0, base_size)
+			sprite.scale = Vector2.ONE * scale_factor
+			sprite.visible = true
+			fallback_body.visible = false
+			return
+	sprite.visible = false
+	fallback_body.visible = true
