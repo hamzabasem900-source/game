@@ -1,6 +1,18 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/settings.gd" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
+bg_color = Color(0.08, 0.12, 0.2, 0.96)
+border_color = Color(0.43, 0.81, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
 
 [node name="Settings" type="Control"]
 layout_mode = 3
@@ -16,7 +28,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.1, 0.1, 0.15, 1)
+color = Color(0.03, 0.04, 0.1, 1)
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -25,50 +37,64 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -200.0
-offset_right = 300.0
-offset_bottom = 200.0
+offset_left = -360.0
+offset_top = -280.0
+offset_right = 360.0
+offset_bottom = 280.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_1")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -270.0
-offset_top = -170.0
-offset_right = 270.0
-offset_bottom = 170.0
-theme_override_constants/separation = 20
+layout_mode = 0
+offset_left = 32.0
+offset_top = 22.0
+offset_right = 688.0
+offset_bottom = 536.0
+theme_override_constants/separation = 12
 
 [node name="TitleLabel" type="Label" parent="Panel/VBoxContainer"]
 layout_mode = 2
-text = "الإعدادات"
+text = "الاعدادات"
 horizontal_alignment = 1
-add_theme_font_size_override/font_size = 32
+add_theme_font_size_override/font_size = 34
 
-[node name="SoundToggle" type="Button" parent="Panel/VBoxContainer"]
+[node name="LanguageButton" type="Button" parent="Panel/VBoxContainer"]
 layout_mode = 2
-text = "الأصوات: مفعلة"
+text = "اللغة: عربي"
+add_theme_font_size_override/font_size = 19
+
+[node name="SfxToggle" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "المؤثرات الصوتية: مفعل"
 add_theme_font_size_override/font_size = 18
 
 [node name="MusicToggle" type="Button" parent="Panel/VBoxContainer"]
 layout_mode = 2
-text = "الموسيقى: مفعلة"
+text = "الموسيقى: مفعل"
 add_theme_font_size_override/font_size = 18
+
+[node name="ResetProgressButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "اعادة تعيين التقدم"
+add_theme_font_size_override/font_size = 18
+
+[node name="AboutLabel" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "عن اللعبة: مطاردة جواهر تعليمية سريعة وممتعة"
+autowrap_mode = 2
+horizontal_alignment = 1
+add_theme_font_size_override/font_size = 16
+
+[node name="WhatsAppButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "تواصل واتساب: 0799451433"
+add_theme_font_size_override/font_size = 17
+
+[node name="EmailButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "البريد: hamzabasem900@gmail.com"
+add_theme_font_size_override/font_size = 17
 
 [node name="BackButton" type="Button" parent="Panel/VBoxContainer"]
 layout_mode = 2
 text = "عودة"
-add_theme_font_size_override/font_size = 18
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
-bg_color = Color(0.15, 0.15, 0.2, 1)
-border_color = Color(0.3, 0.5, 1, 0.8)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
+add_theme_font_size_override/font_size = 20
