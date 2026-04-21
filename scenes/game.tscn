@@ -1,10 +1,43 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/entities/player.tscn" id="2"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud"]
+bg_color = Color(0.07, 0.11, 0.2, 0.86)
+border_color = Color(0.18, 0.47, 0.78, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
 [node name="Game" type="Node2D"]
 script = ExtResource("1")
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="Base" type="ColorRect" parent="Background"]
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 1288.0
+offset_bottom = 728.0
+color = Color(0.06, 0.08, 0.13, 1)
+
+[node name="Glow1" type="Polygon2D" parent="Background"]
+polygon = PackedVector2Array(110, 108, 620, 86, 530, 350, 70, 290)
+color = Color(0.18, 0.45, 0.86, 0.25)
+
+[node name="Glow2" type="Polygon2D" parent="Background"]
+polygon = PackedVector2Array(760, 160, 1220, 260, 1170, 640, 700, 560)
+color = Color(0.13, 0.62, 0.4, 0.22)
+
+[node name="GridHint" type="Polygon2D" parent="Background"]
+polygon = PackedVector2Array(220, 620, 1260, 620, 1260, 700, 220, 700)
+color = Color(1, 1, 1, 0.05)
 
 [node name="Player" parent="." instance=ExtResource("2")]
 position = Vector2(640, 360)
@@ -21,34 +54,45 @@ wait_time = 1.0
 [node name="UI" type="Panel" parent="CanvasLayer"]
 offset_left = 12.0
 offset_top = 12.0
-offset_right = 420.0
-offset_bottom = 120.0
+offset_right = 1268.0
+offset_bottom = 92.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud")
 
 [node name="ScoreLabel" type="Label" parent="CanvasLayer/UI"]
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 380.0
-offset_bottom = 32.0
-text = "نقاط المستوى: 0"
+offset_left = 900.0
+offset_top = 18.0
+offset_right = 1248.0
+offset_bottom = 56.0
+text = "💰 النقاط: 0"
+horizontal_alignment = 2
+add_theme_font_size_override/font_size = 26
+add_theme_colors/font_color = Color(1, 0.88, 0.28, 1)
 
 [node name="AttemptsLabel" type="Label" parent="CanvasLayer/UI"]
-offset_left = 10.0
-offset_top = 40.0
-offset_right = 380.0
-offset_bottom = 62.0
-text = "المحاولات المتبقية: 5"
+offset_left = 20.0
+offset_top = 18.0
+offset_right = 340.0
+offset_bottom = 56.0
+text = "❤️ الأرواح: 3"
+add_theme_font_size_override/font_size = 26
+add_theme_colors/font_color = Color(1, 0.46, 0.56, 1)
 
 [node name="TimerLabel" type="Label" parent="CanvasLayer/UI"]
-offset_left = 10.0
-offset_top = 70.0
-offset_right = 380.0
-offset_bottom = 92.0
-text = "الوقت المتبقي: 0"
+offset_left = 390.0
+offset_top = 18.0
+offset_right = 650.0
+offset_bottom = 56.0
+text = "⏱️ الوقت: 50"
+horizontal_alignment = 1
+add_theme_font_size_override/font_size = 26
+add_theme_colors/font_color = Color(0.59, 0.91, 1, 1)
 
 [node name="LevelLabel" type="Label" parent="CanvasLayer/UI"]
-offset_left = 220.0
-offset_top = 10.0
-offset_right = 390.0
-offset_bottom = 32.0
+offset_left = 670.0
+offset_top = 18.0
+offset_right = 890.0
+offset_bottom = 56.0
 text = "المستوى"
 horizontal_alignment = 2
+add_theme_font_size_override/font_size = 24
+add_theme_colors/font_color = Color(0.79, 0.76, 1, 1)
