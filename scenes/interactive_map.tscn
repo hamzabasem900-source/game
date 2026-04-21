@@ -1,18 +1,30 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/interactive_map.gd" id="1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
-bg_color = Color(0.15, 0.15, 0.2, 1)
-border_color = Color(0.3, 0.7, 1, 0.8)
+bg_color = Color(0.1, 0.16, 0.27, 0.88)
+border_color = Color(0.4, 0.8, 1, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2"]
+bg_color = Color(0.17, 0.33, 0.62, 0.95)
+border_color = Color(0.52, 0.88, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
 
 [node name="InteractiveMap" type="Control"]
 layout_mode = 3
@@ -28,29 +40,45 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.08, 0.08, 0.12, 1)
+color = Color(0.03, 0.04, 0.12, 1)
 
-[node name="TitleLabel" type="Label" parent="."]
+[node name="HeaderPanel" type="Panel" parent="."]
 layout_mode = 0
-offset_left = 640.0
-offset_top = 20.0
-offset_right = 640.0
-offset_bottom = 70.0
-text = "خريطة المستويات"
+offset_left = 320.0
+offset_top = 16.0
+offset_right = 960.0
+offset_bottom = 90.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1")
+
+[node name="TitleLabel" type="Label" parent="HeaderPanel"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 14.0
+offset_right = 620.0
+offset_bottom = 62.0
+text = "🗺️ خريطة المغامرة - 3 مستويات"
 horizontal_alignment = 1
-add_theme_font_size_override/font_size = 40
-add_theme_colors/font_color = Color(0.3, 0.7, 1, 1)
+add_theme_font_size_override/font_size = 34
+add_theme_colors/font_color = Color(0.53, 0.93, 1, 1)
 
-[node name="StatusLabel" type="Label" parent="."]
+[node name="FooterPanel" type="Panel" parent="."]
 layout_mode = 0
-offset_left = 640.0
-offset_top = 650.0
-offset_right = 640.0
-offset_bottom = 690.0
+offset_left = 260.0
+offset_top = 634.0
+offset_right = 1020.0
+offset_bottom = 708.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1")
+
+[node name="StatusLabel" type="Label" parent="FooterPanel"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 740.0
+offset_bottom = 56.0
 text = ""
 horizontal_alignment = 1
-add_theme_font_size_override/font_size = 16
-add_theme_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+add_theme_font_size_override/font_size = 20
+add_theme_colors/font_color = Color(0.92, 0.95, 1, 1)
 
 [node name="BackButton" type="Button" parent="."]
 layout_mode = 0
@@ -59,7 +87,8 @@ offset_top = 650.0
 offset_right = 200.0
 offset_bottom = 690.0
 text = "◀️ عودة"
-add_theme_font_size_override/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_2")
+add_theme_font_size_override/font_size = 16
 
 [node name="ResetButton" type="Button" parent="."]
 layout_mode = 0
@@ -68,5 +97,5 @@ offset_top = 650.0
 offset_right = 1230.0
 offset_bottom = 690.0
 text = "🔄 إعادة تعيين"
-add_theme_font_size_override/font_size = 14
-
+theme_override_styles/normal = SubResource("StyleBoxFlat_2")
+add_theme_font_size_override/font_size = 16

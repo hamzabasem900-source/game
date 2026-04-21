@@ -4,7 +4,7 @@ class_name InteractiveMap
 
 const LEVEL_BUTTON_SIZE := 80.0
 const LEVEL_BUTTON_RADIUS := 40.0
-const LINE_WIDTH := 4.0
+const LINE_WIDTH := 10.0
 const PADDING := 100.0
 
 var level_buttons: Array[Control] = []
@@ -12,7 +12,10 @@ var level_positions: Array[Vector2] = []
 var hovered_level: int = -1
 
 func _ready() -> void:
+	AudioManager.play_lobby_loop()
 	set_process_input(true)
+	$ColorRect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	$ColorRect.z_index = -100
 	_create_level_buttons()
 	_update_button_states()
 	_update_status_label()
@@ -26,17 +29,14 @@ func _create_level_buttons() -> void:
 	var available_width = viewport_size.x - (PADDING * 2)
 	var available_height = viewport_size.y - (PADDING * 3)
 	
-	# ترتيب المستويات في شبكة (2x2 للمستويات الأربعة)
 	var positions: Array[Vector2] = []
-	if levels_count == 4:
-		positions = [
-			Vector2(PADDING + available_width * 0.25, PADDING + available_height * 0.35),
-			Vector2(PADDING + available_width * 0.75, PADDING + available_height * 0.35),
-			Vector2(PADDING + available_width * 0.25, PADDING + available_height * 0.75),
-			Vector2(PADDING + available_width * 0.75, PADDING + available_height * 0.75)
-		]
+	if levels_count == 3:
+		# مسار تصاعدي لثلاثة مستويات
+		positions.append(Vector2(PADDING + available_width * 0.20, PADDING + available_height * 0.68))
+		positions.append(Vector2(PADDING + available_width * 0.50, PADDING + available_height * 0.42))
+		positions.append(Vector2(PADDING + available_width * 0.80, PADDING + available_height * 0.62))
 	else:
-		# ترتيب أفقي للمستويات الثلاثة
+		# ترتيب أفقي عام لباقي الحالات
 		for i in range(levels_count):
 			var x = PADDING + (available_width / (levels_count + 1)) * (i + 1)
 			var y = viewport_size.y / 2
@@ -61,8 +61,23 @@ func _process(delta: float) -> void:
 	queue_redraw()
 
 func _draw() -> void:
+	if level_positions.is_empty():
+		return
+	_draw_map_background()
 	_draw_connecting_lines()
 	_draw_level_buttons()
+
+func _draw_map_background() -> void:
+	var size = get_viewport_rect().size
+	# جزر/بقع لونية كخلفية الخريطة
+	draw_circle(Vector2(size.x * 0.28, size.y * 0.42), 220, Color(0.12, 0.55, 0.38, 0.25))
+	draw_circle(Vector2(size.x * 0.52, size.y * 0.63), 280, Color(0.16, 0.44, 0.7, 0.22))
+	draw_circle(Vector2(size.x * 0.72, size.y * 0.36), 210, Color(0.28, 0.65, 0.29, 0.18))
+	# نجوم بسيطة لزيادة الحيوية
+	for i in range(18):
+		var x = fmod((i * 177.0) + 120.0, size.x - 60.0) + 30.0
+		var y = fmod((i * 121.0) + 90.0, size.y - 140.0) + 70.0
+		draw_circle(Vector2(x, y), 1.6, Color(1, 1, 1, 0.35))
 
 func _draw_connecting_lines() -> void:
 	# رسم الخطوط التي تربط بين المستويات
@@ -71,24 +86,26 @@ func _draw_connecting_lines() -> void:
 	for i in range(levels_count - 1):
 		var start_pos = level_positions[i]
 		var end_pos = level_positions[i + 1]
+		var mid = (start_pos + end_pos) / 2.0 + Vector2(0, -32.0 if i % 2 == 0 else 28.0)
 		
 		# تحديد لون الخط بناءً على حالة المستوى
 		var line_color: Color
 		if GameState.unlocked_level > i:
-			line_color = Color(0.2, 0.9, 0.2)  # أخضر فاتح
+			line_color = Color(0.28, 1.0, 0.54)  # أخضر فاتح
 		elif GameState.unlocked_level == i:
-			line_color = Color(1.0, 0.9, 0.2)  # أصفر فاتح
+			line_color = Color(1.0, 0.86, 0.22)  # أصفر فاتح
 		else:
-			line_color = Color(0.2, 0.2, 0.2)  # رمادي غامق
+			line_color = Color(0.28, 0.33, 0.44)  # رمادي مزرق
 		
-		draw_line(start_pos, end_pos, line_color, LINE_WIDTH)
+		var curve_points := PackedVector2Array([start_pos, mid, end_pos])
+		draw_polyline(curve_points, Color(0.02, 0.04, 0.12, 0.45), LINE_WIDTH + 4.0)
+		draw_polyline(curve_points, line_color, LINE_WIDTH)
 
 func _draw_level_buttons() -> void:
 	var levels_count = GameState.LEVELS.size()
 	
 	for i in range(levels_count):
 		var pos = level_positions[i]
-		var level_data = GameState.LEVELS[i]
 		
 		# تحديد حالة المستوى
 		var is_locked = i > GameState.unlocked_level
@@ -114,17 +131,20 @@ func _draw_level_buttons() -> void:
 			scale_factor = 1.15
 		
 		var scaled_radius = LEVEL_BUTTON_RADIUS * scale_factor
+		var pulse = 0.0
+		if is_current and not is_locked:
+			pulse = sin(Time.get_ticks_msec() / 160.0) * 4.0
 		
 		# رسم ظل الزر
-		draw_circle(pos + Vector2(3, 3), scaled_radius, Color(0, 0, 0, 0.3))
+		draw_circle(pos + Vector2(5, 5), scaled_radius + 4.0, Color(0, 0, 0, 0.33))
 		
 		# رسم دائرة الزر
-		draw_circle(pos, scaled_radius, button_color)
+		draw_circle(pos, scaled_radius + pulse, button_color)
 		
 		# رسم حد الزر
 		var border_color = Color.WHITE if is_hovered else Color(0.8, 0.8, 0.8)
 		var border_width = 3.0 if is_hovered else 2.0
-		draw_circle(pos, scaled_radius, border_color, border_width)
+		draw_circle(pos, scaled_radius + pulse, border_color, border_width)
 		
 		# رسم رقم المستوى
 		var level_number = str(i + 1)
@@ -132,10 +152,8 @@ func _draw_level_buttons() -> void:
 		if not font:
 			font = ThemeDB.fallback_font
 		var font_size = 36
-		
 		var text_size = font.get_string_size(level_number, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size)
 		var text_pos = pos - text_size / 2
-		
 		draw_string(font, text_pos, level_number, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size, Color.WHITE)
 		
 		# إضافة أيقونة الحالة
@@ -143,6 +161,8 @@ func _draw_level_buttons() -> void:
 			_draw_lock_icon(pos)
 		elif is_completed:
 			_draw_checkmark(pos)
+		elif is_current:
+			_draw_pin_icon(pos + Vector2(0, -60))
 
 func _draw_lock_icon(pos: Vector2) -> void:
 	# رسم أيقونة قفل بسيطة
@@ -159,6 +179,15 @@ func _draw_checkmark(pos: Vector2) -> void:
 	
 	draw_line(check_start, check_mid, Color(0, 1, 0), 2.5)
 	draw_line(check_mid, check_end, Color(0, 1, 0), 2.5)
+
+func _draw_pin_icon(pos: Vector2) -> void:
+	draw_circle(pos, 10, Color(1, 0.2, 0.28, 1))
+	draw_circle(pos, 4, Color(1, 1, 1, 0.95))
+	draw_polygon(PackedVector2Array([
+		pos + Vector2(0, 18),
+		pos + Vector2(-6, 8),
+		pos + Vector2(6, 8)
+	]), [Color(1, 0.2, 0.28, 1)])
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -199,12 +228,14 @@ func _update_button_states() -> void:
 	queue_redraw()
 
 func _update_status_label() -> void:
-	var status_text = "النقاط الحالية: %d | المحاولات: %d | المستويات المكتملة: %d/4" % [
+	var levels_total = GameState.LEVELS.size()
+	var status_text = "💰 النقاط: %d | ❤️ الأرواح: %d | ✅ مكتمل: %d/%d" % [
 		GameState.total_score,
 		GameState.attempts_left,
-		GameState.levels_won
+		GameState.levels_won,
+		levels_total
 	]
-	$StatusLabel.text = status_text
+	$FooterPanel/StatusLabel.text = status_text
 
 func _on_back_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
