@@ -71,9 +71,9 @@ func _draw() -> void:
 func _draw_map_background() -> void:
 	var size = get_viewport_rect().size
 	# جزر/بقع لونية كخلفية الخريطة
-	draw_circle(Vector2(size.x * 0.28, size.y * 0.42), 220, Color(0.12, 0.55, 0.38, 0.25))
-	draw_circle(Vector2(size.x * 0.52, size.y * 0.63), 280, Color(0.16, 0.44, 0.7, 0.22))
-	draw_circle(Vector2(size.x * 0.72, size.y * 0.36), 210, Color(0.28, 0.65, 0.29, 0.18))
+	draw_circle(Vector2(size.x * 0.28, size.y * 0.42), 220, Color(0.18, 0.62, 0.46, 0.30))
+	draw_circle(Vector2(size.x * 0.52, size.y * 0.63), 280, Color(0.20, 0.50, 0.78, 0.28))
+	draw_circle(Vector2(size.x * 0.72, size.y * 0.36), 210, Color(0.34, 0.72, 0.34, 0.24))
 	# نجوم بسيطة لزيادة الحيوية
 	for i in range(18):
 		var x = fmod((i * 177.0) + 120.0, size.x - 60.0) + 30.0
@@ -92,11 +92,11 @@ func _draw_connecting_lines() -> void:
 		# تحديد لون الخط بناء على حالة المستوى
 		var line_color: Color
 		if GameState.unlocked_level > i:
-			line_color = Color(0.28, 1.0, 0.54)  # أخضر فاتح
+			line_color = Color(1.0, 0.84, 0.20)  # اصفر فاتح
 		elif GameState.unlocked_level == i:
-			line_color = Color(1.0, 0.86, 0.22)  # أصفر فاتح
+			line_color = Color(1.0, 0.92, 0.42)  # اصفر اقوى
 		else:
-			line_color = Color(0.28, 0.33, 0.44)  # رمادي مزرق
+			line_color = Color(0.36, 0.40, 0.52)  # رمادي مزرق
 		
 		var curve_points := PackedVector2Array([start_pos, mid, end_pos])
 		draw_polyline(curve_points, Color(0.02, 0.04, 0.12, 0.45), LINE_WIDTH + 4.0)
@@ -117,13 +117,13 @@ func _draw_level_buttons() -> void:
 		# تحديد لون الزر
 		var button_color: Color
 		if is_locked:
-			button_color = Color(0.2, 0.2, 0.2)  # رمادي (مقفول)
+			button_color = Color(0.42, 0.44, 0.50)  # رمادي (مقفول)
 		elif is_completed:
-			button_color = Color(0.1, 0.7, 0.1)  # أخضر (مكتمل)
+			button_color = Color(0.30, 0.88, 0.45)  # اخضر (مكتمل)
 		elif is_current:
-			button_color = Color(0.9, 0.8, 0.1)  # أصفر (متاح)
+			button_color = Color(1.0, 0.84, 0.20)  # اصفر (متاح)
 		else:
-			button_color = Color(0.3, 0.5, 1.0)  # أزرق
+			button_color = Color(0.95, 0.80, 0.22)  # اصفر
 		
 		# تطبيق تأثير المرور فوق الزر
 		var scale_factor = 1.0
@@ -166,10 +166,10 @@ func _draw_level_buttons() -> void:
 			_draw_pin_icon(pos + Vector2(0, -60))
 
 func _draw_lock_icon(pos: Vector2) -> void:
-	# رسم أيقونة قفل بسيطة
-	var lock_size = 20.0
-	var lock_rect = Rect2(pos.x - lock_size/2, pos.y + lock_size/4, lock_size, lock_size)
-	draw_rect(lock_rect, Color.RED, false, 2.0)
+	var font = get_theme_font("font")
+	if not font:
+		font = ThemeDB.fallback_font
+	draw_string(font, pos + Vector2(-11, 14), "🔒", HORIZONTAL_ALIGNMENT_LEFT, -1, 24, Color(1, 1, 1, 1))
 
 func _draw_checkmark(pos: Vector2) -> void:
 	# رسم علامة صح بسيطة
