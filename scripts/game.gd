@@ -19,7 +19,7 @@ func _ready() -> void:
 	player.add_to_group("player")
 	level_data = GameState.active_level_data()
 	time_left = int(level_data.time)
-	ui_level.text = str(level_data.name)
+	ui_level.text = "%s | %s" % [str(level_data.name), str(level_data.difficulty)]
 	_update_ui()
 	_spawn_collectibles(int(level_data.collectibles))
 	_spawn_enemies(int(level_data.enemies), float(level_data.enemy_speed))
@@ -56,8 +56,7 @@ func _on_collectible_collected(points: int) -> void:
 func _on_player_hit() -> void:
 	GameState.lose_attempt()
 	if GameState.attempts_left <= 0:
-		AudioManager.play_end()
-		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+		_show_results(false, true)
 		return
 	get_tree().reload_current_scene()
 
@@ -68,21 +67,25 @@ func _on_countdown_timeout() -> void:
 		_finish_level()
 
 func _finish_level() -> void:
-	countdown.stop()
 	var target: int = int(level_data.target)
 	var passed := score_in_level >= target
+	_show_results(passed, false, target)
+
+func _show_results(passed: bool, game_over: bool, target: int = -1) -> void:
+	countdown.stop()
 	if passed:
 		GameState.register_level_win()
 	AudioManager.play_end()
 	var result_scene: PackedScene = preload("res://scenes/results.tscn")
 	var result_instance: Control = result_scene.instantiate()
 	result_instance.set_meta("passed", passed)
+	result_instance.set_meta("game_over", game_over)
 	result_instance.set_meta("level_score", score_in_level)
-	result_instance.set_meta("target", target)
+	result_instance.set_meta("target", target if target >= 0 else int(level_data.target))
 	get_tree().root.add_child(result_instance)
 	queue_free()
 
 func _update_ui() -> void:
-	ui_score.text = "نقاط المستوى: %d" % score_in_level
-	ui_attempts.text = "المحاولات المتبقية: %d" % GameState.attempts_left
-	ui_timer.text = "الوقت المتبقي: %d" % time_left
+	ui_score.text = "💰 النقاط: %d / %d" % [score_in_level, int(level_data.target)]
+	ui_attempts.text = "❤️ الأرواح: %d" % GameState.attempts_left
+	ui_timer.text = "⏱️ الوقت: %d" % time_left
