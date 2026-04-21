@@ -6,6 +6,7 @@ var music_enabled: bool = true
 @onready var lobby_player: AudioStreamPlayer = AudioStreamPlayer.new()
 @onready var game_player: AudioStreamPlayer = AudioStreamPlayer.new()
 @onready var pickup_player: AudioStreamPlayer = AudioStreamPlayer.new()
+@onready var danger_player: AudioStreamPlayer = AudioStreamPlayer.new()
 @onready var win_player: AudioStreamPlayer = AudioStreamPlayer.new()
 @onready var game_over_player: AudioStreamPlayer = AudioStreamPlayer.new()
 
@@ -28,6 +29,10 @@ const WIN_SFX_PATHS := [
 	"res://audio/win.mp3",
 	"res://audio/win.wav"
 ]
+const DANGER_SFX_PATHS := [
+	"res://audio/danger.wav",
+	"res://audio/hit.wav"
+]
 const GAME_OVER_SFX_PATHS := [
 	"res://audio/game over.mp3",
 	"res://audio/game_over.mp3",
@@ -39,11 +44,13 @@ func _ready() -> void:
 	add_child(lobby_player)
 	add_child(game_player)
 	add_child(pickup_player)
+	add_child(danger_player)
 	add_child(win_player)
 	add_child(game_over_player)
 	lobby_player.stream = _load_first_existing(LOBBY_MUSIC_PATHS)
 	game_player.stream = _load_first_existing(GAME_MUSIC_PATHS)
 	pickup_player.stream = _load_first_existing(PICKUP_SFX_PATHS)
+	danger_player.stream = _load_first_existing(DANGER_SFX_PATHS)
 	win_player.stream = _load_first_existing(WIN_SFX_PATHS)
 	game_over_player.stream = _load_first_existing(GAME_OVER_SFX_PATHS)
 	lobby_player.volume_db = -8.0
@@ -79,6 +86,9 @@ func stop_game_loop() -> void:
 func play_gameplay_pickup() -> void:
 	_play_if_exists(pickup_player)
 
+func play_danger() -> void:
+	_play_if_exists(danger_player)
+
 func play_win() -> void:
 	_play_if_exists(win_player)
 
@@ -110,6 +120,8 @@ func _log_missing_streams() -> void:
 		push_warning("AudioManager: game music (gamesound.mp3) not found in res://audio/")
 	if not pickup_player.stream:
 		push_warning("AudioManager: collectible sound not found in res://audio/")
+	if not danger_player.stream:
+		push_warning("AudioManager: danger sound not found in res://audio/")
 	if not win_player.stream:
 		push_warning("AudioManager: win sound not found in res://audio/")
 	if not game_over_player.stream:

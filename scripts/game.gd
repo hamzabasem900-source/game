@@ -52,7 +52,6 @@ func _on_collectible_collected(points: int) -> void:
 	if level_finished:
 		return
 	score_in_level += points
-	GameState.add_score(points)
 	AudioManager.play_gameplay_pickup()
 	_update_ui()
 	var target: int = int(level_data.target)
@@ -66,6 +65,7 @@ func _on_collectible_collected(points: int) -> void:
 func _on_player_hit() -> void:
 	if level_finished:
 		return
+	AudioManager.play_danger()
 	GameState.lose_attempt()
 	if GameState.attempts_left <= 0:
 		_show_results(false, true)
@@ -91,6 +91,7 @@ func _show_results(passed: bool, game_over: bool, target: int = -1) -> void:
 	level_finished = true
 	countdown.stop()
 	if passed:
+		GameState.add_score(score_in_level)
 		GameState.register_level_win()
 	AudioManager.stop_game_loop()
 	if passed:
@@ -100,8 +101,7 @@ func _show_results(passed: bool, game_over: bool, target: int = -1) -> void:
 	else:
 		AudioManager.play_game_over()
 		GameState.store_result(false, true, score_in_level, target if target >= 0 else int(level_data.target))
-		GameState.restore_attempts()
-		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+		get_tree().change_scene_to_file("res://scenes/results.tscn")
 
 func _update_ui() -> void:
 	ui_score.text = "💰 النقاط: %d / %d" % [score_in_level, int(level_data.target)]

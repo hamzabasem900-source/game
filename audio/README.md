@@ -4,6 +4,7 @@
 - `start.mp3` : صوت بداية اللعبة.
 - `food.mp3` : صوت جمع العنصر.
 - `win.mp3` : صوت الفوز.
+- `danger.wav` : صوت الاصطدام مع الخطر.
 - `game over.mp3` أو `game_over.mp3` : صوت الخسارة.
 - `gamesound.mp3` : موسيقى الخلفية داخل اللعب.
 - بدائل مدعومة: `Start.mp3`, `pickup.mp3`, `game_sound.mp3`.
