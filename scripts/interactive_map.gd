@@ -26,17 +26,14 @@ func _create_level_buttons() -> void:
 	var available_width = viewport_size.x - (PADDING * 2)
 	var available_height = viewport_size.y - (PADDING * 3)
 	
-	# ترتيب المستويات في شبكة (2x2 للمستويات الأربعة)
 	var positions: Array[Vector2] = []
-	if levels_count == 4:
-		positions = [
-			Vector2(PADDING + available_width * 0.25, PADDING + available_height * 0.35),
-			Vector2(PADDING + available_width * 0.75, PADDING + available_height * 0.35),
-			Vector2(PADDING + available_width * 0.25, PADDING + available_height * 0.75),
-			Vector2(PADDING + available_width * 0.75, PADDING + available_height * 0.75)
-		]
+	if levels_count == 3:
+		# مسار تصاعدي لثلاثة مستويات
+		positions.append(Vector2(PADDING + available_width * 0.20, PADDING + available_height * 0.68))
+		positions.append(Vector2(PADDING + available_width * 0.50, PADDING + available_height * 0.42))
+		positions.append(Vector2(PADDING + available_width * 0.80, PADDING + available_height * 0.62))
 	else:
-		# ترتيب أفقي للمستويات الثلاثة
+		# ترتيب أفقي عام لباقي الحالات
 		for i in range(levels_count):
 			var x = PADDING + (available_width / (levels_count + 1)) * (i + 1)
 			var y = viewport_size.y / 2
@@ -199,10 +196,12 @@ func _update_button_states() -> void:
 	queue_redraw()
 
 func _update_status_label() -> void:
-	var status_text = "النقاط الحالية: %d | المحاولات: %d | المستويات المكتملة: %d/4" % [
+	var levels_total = GameState.LEVELS.size()
+	var status_text = "💰 النقاط: %d | ❤️ الأرواح: %d | ✅ مكتمل: %d/%d" % [
 		GameState.total_score,
 		GameState.attempts_left,
-		GameState.levels_won
+		GameState.levels_won,
+		levels_total
 	]
 	$StatusLabel.text = status_text
 
