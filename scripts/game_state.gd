@@ -1,13 +1,12 @@
 extends Node
 
 const LEVELS := [
-	{"name": "المستوى 1", "time": 70, "target": 120, "collectibles": 14, "enemies": 2, "enemy_speed": 90.0, "difficulty": "سهل"},
-	{"name": "المستوى 2", "time": 55, "target": 170, "collectibles": 16, "enemies": 3, "enemy_speed": 120.0, "difficulty": "متوسط"},
-	{"name": "المستوى 3", "time": 40, "target": 220, "collectibles": 18, "enemies": 4, "enemy_speed": 150.0, "difficulty": "صعب"},
-	{"name": "المستوى 4", "time": 30, "target": 280, "collectibles": 20, "enemies": 5, "enemy_speed": 180.0, "difficulty": "شديد"}
+	{"name": "المستوى 1", "time": 50, "target": 100, "collectibles": 14, "enemies": 2, "enemy_speed": 95.0, "difficulty": "سهل"},
+	{"name": "المستوى 2", "time": 45, "target": 150, "collectibles": 17, "enemies": 3, "enemy_speed": 125.0, "difficulty": "متوسط"},
+	{"name": "المستوى 3", "time": 40, "target": 210, "collectibles": 20, "enemies": 4, "enemy_speed": 155.0, "difficulty": "صعب"}
 ]
 
-const MAX_ATTEMPTS := 5
+const MAX_ATTEMPTS := 3
 
 var total_score: int = 0
 var attempts_left: int = MAX_ATTEMPTS

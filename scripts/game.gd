@@ -19,7 +19,7 @@ func _ready() -> void:
 	player.add_to_group("player")
 	level_data = GameState.active_level_data()
 	time_left = int(level_data.time)
-	ui_level.text = str(level_data.name)
+	ui_level.text = "%s | %s" % [str(level_data.name), str(level_data.difficulty)]
 	_update_ui()
 	_spawn_collectibles(int(level_data.collectibles))
 	_spawn_enemies(int(level_data.enemies), float(level_data.enemy_speed))
@@ -83,6 +83,6 @@ func _finish_level() -> void:
 	queue_free()
 
 func _update_ui() -> void:
-	ui_score.text = "نقاط المستوى: %d" % score_in_level
-	ui_attempts.text = "المحاولات المتبقية: %d" % GameState.attempts_left
-	ui_timer.text = "الوقت المتبقي: %d" % time_left
+	ui_score.text = "💰 النقاط: %d / %d" % [score_in_level, int(level_data.target)]
+	ui_attempts.text = "❤️ الأرواح: %d" % GameState.attempts_left
+	ui_timer.text = "⏱️ الوقت: %d" % time_left

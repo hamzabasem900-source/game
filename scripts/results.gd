@@ -22,7 +22,7 @@ func _on_map_pressed() -> void:
 		GameState.reset_run()
 		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 		return
-	get_tree().change_scene_to_file("res://scenes/map.tscn")
+	get_tree().change_scene_to_file("res://scenes/interactive_map.tscn")
 
 func _on_menu_pressed() -> void:
 	GameState.reset_run()
