@@ -78,7 +78,7 @@ func _draw_map_background() -> void:
 	for i in range(18):
 		var x = fmod((i * 177.0) + 120.0, size.x - 60.0) + 30.0
 		var y = fmod((i * 121.0) + 90.0, size.y - 140.0) + 70.0
-		draw_circle(Vector2(x, y), 1.6, Color(1, 1, 1, 0.35))
+		draw_circle(Vector2(x, y), 1.6, Color(0.62, 0.82, 1.0, 0.28))
 
 func _draw_connecting_lines() -> void:
 	# رسم الخطوط التي تربط بين المستويات
@@ -143,7 +143,7 @@ func _draw_level_buttons() -> void:
 		draw_circle(pos, scaled_radius + pulse, button_color)
 		
 		# رسم حد الزر
-		var border_color = Color.WHITE if is_hovered else Color(0.8, 0.8, 0.8)
+		var border_color = Color(1.0, 0.86, 0.28) if is_hovered else Color(0.55, 0.72, 0.95)
 		var border_width = 3.0 if is_hovered else 2.0
 		draw_circle(pos, scaled_radius + pulse, border_color, border_width)
 		
@@ -155,7 +155,7 @@ func _draw_level_buttons() -> void:
 		var font_size = 36
 		var text_size = font.get_string_size(level_number, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size)
 		var text_pos = pos - text_size / 2
-		draw_string(font, text_pos, level_number, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size, Color.WHITE)
+		draw_string(font, text_pos, level_number, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size, Color(0.07, 0.12, 0.22, 1))
 		
 		# إضافة أيقونة الحالة
 		if is_locked:
@@ -169,7 +169,7 @@ func _draw_lock_icon(pos: Vector2) -> void:
 	var font = get_theme_font("font")
 	if not font:
 		font = ThemeDB.fallback_font
-	draw_string(font, pos + Vector2(-11, 14), "🔒", HORIZONTAL_ALIGNMENT_LEFT, -1, 24, Color(1, 1, 1, 1))
+	draw_string(font, pos + Vector2(-11, 14), "🔒", HORIZONTAL_ALIGNMENT_LEFT, -1, 24, Color(0.95, 0.84, 0.28, 1))
 
 func _draw_checkmark(pos: Vector2) -> void:
 	# رسم علامة صح بسيطة
