@@ -50,3 +50,6 @@ func store_result(passed: bool, game_over: bool, level_score: int, target: int) 
 		"level_score": level_score,
 		"target": target
 	}
+
+func restore_attempts() -> void:
+	attempts_left = MAX_ATTEMPTS

@@ -12,6 +12,7 @@ var level_positions: Array[Vector2] = []
 var hovered_level: int = -1
 
 func _ready() -> void:
+	AudioManager.play_lobby_loop()
 	set_process_input(true)
 	$ColorRect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	$ColorRect.z_index = -100

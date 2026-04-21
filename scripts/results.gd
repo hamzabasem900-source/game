@@ -1,6 +1,7 @@
 extends Control
 
 func _ready() -> void:
+	AudioManager.play_lobby_loop()
 	var result_data := GameState.last_result
 	var passed: bool = bool(result_data.get("passed", false))
 	var game_over: bool = bool(result_data.get("game_over", false))
@@ -31,15 +32,12 @@ func _ready() -> void:
 func _on_map_pressed() -> void:
 	var game_over: bool = bool(GameState.last_result.get("game_over", false))
 	if game_over:
-		GameState.reset_run()
 		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 		return
 	if GameState.run_completed():
-		GameState.reset_run()
 		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 		return
 	get_tree().change_scene_to_file("res://scenes/interactive_map.tscn")
 
 func _on_menu_pressed() -> void:
-	GameState.reset_run()
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
