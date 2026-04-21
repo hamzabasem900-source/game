@@ -20,6 +20,7 @@ func _ready() -> void:
 	randomize()
 	player.add_to_group("player")
 	level_data = GameState.active_level_data()
+	AudioManager.play_background()
 	time_left = int(level_data.time)
 	ui_level.text = "%s | %s" % [str(level_data.name), str(level_data.difficulty)]
 	_update_ui()
@@ -91,7 +92,11 @@ func _show_results(passed: bool, game_over: bool, target: int = -1) -> void:
 	countdown.stop()
 	if passed:
 		GameState.register_level_win()
-	AudioManager.play_end()
+	AudioManager.stop_background()
+	if passed:
+		AudioManager.play_win()
+	else:
+		AudioManager.play_game_over()
 	GameState.store_result(passed, game_over, score_in_level, target if target >= 0 else int(level_data.target))
 	get_tree().change_scene_to_file("res://scenes/results.tscn")
 
