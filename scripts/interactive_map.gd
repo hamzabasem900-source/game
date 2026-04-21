@@ -18,6 +18,7 @@ func _ready() -> void:
 	$ColorRect.z_index = -100
 	_create_level_buttons()
 	_update_button_states()
+	_apply_language()
 	_update_status_label()
 	
 	$BackButton.pressed.connect(_on_back_pressed)
@@ -229,12 +230,21 @@ func _update_button_states() -> void:
 
 func _update_status_label() -> void:
 	var levels_total = GameState.LEVELS.size()
-	var status_text = "💰 النقاط: %d | ❤️ الأرواح: %d | ✅ مكتمل: %d/%d" % [
-		GameState.total_score,
-		GameState.attempts_left,
-		GameState.levels_won,
-		levels_total
-	]
+	var status_text: String
+	if GameState.current_language == "ar":
+		status_text = "💰 النقاط: %d | ❤️ الارواح: %d | ✅ مكتمل: %d/%d" % [
+			GameState.total_score,
+			GameState.attempts_left,
+			GameState.levels_won,
+			levels_total
+		]
+	else:
+		status_text = "💰 Score: %d | ❤️ Lives: %d | ✅ Cleared: %d/%d" % [
+			GameState.total_score,
+			GameState.attempts_left,
+			GameState.levels_won,
+			levels_total
+		]
 	$FooterPanel/StatusLabel.text = status_text
 
 func _on_back_pressed() -> void:
@@ -244,3 +254,9 @@ func _on_reset_pressed() -> void:
 	GameState.reset_run()
 	_update_button_states()
 	_update_status_label()
+
+func _apply_language() -> void:
+	var ar := GameState.current_language == "ar"
+	$HeaderPanel/TitleLabel.text = "🗺️ خريطة المغامرة - 3 مستويات" if ar else "🗺️ Adventure Map - 3 Levels"
+	$BackButton.text = "◀️ عودة" if ar else "◀️ Back"
+	$ResetButton.text = "🔄 اعادة تعيين" if ar else "🔄 Reset"

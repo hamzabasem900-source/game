@@ -35,7 +35,7 @@ func _ready() -> void:
 	$CanvasLayer.process_mode = Node.PROCESS_MODE_ALWAYS
 	$CanvasLayer/PauseMenu.process_mode = Node.PROCESS_MODE_ALWAYS
 	time_left = int(level_data.time)
-	ui_level.text = "%s | %s" % [str(level_data.name), str(level_data.difficulty)]
+	_apply_language()
 	_update_ui()
 	_spawn_collectibles(int(level_data.collectibles))
 	_spawn_enemies(int(level_data.enemies), float(level_data.enemy_speed))
@@ -127,9 +127,14 @@ func _show_results(passed: bool, game_over: bool, target: int = -1) -> void:
 		get_tree().change_scene_to_file("res://scenes/results.tscn")
 
 func _update_ui() -> void:
-	ui_score.text = "💰 النقاط: %d / %d" % [score_in_level, int(level_data.target)]
-	ui_attempts.text = "❤️ الأرواح: %d" % GameState.attempts_left
-	ui_timer.text = "⏱️ الوقت: %d" % time_left
+	if GameState.current_language == "ar":
+		ui_score.text = "💰 النقاط: %d / %d" % [score_in_level, int(level_data.target)]
+		ui_attempts.text = "❤️ الارواح: %d" % GameState.attempts_left
+		ui_timer.text = "⏱️ الوقت: %d" % time_left
+	else:
+		ui_score.text = "💰 Score: %d / %d" % [score_in_level, int(level_data.target)]
+		ui_attempts.text = "❤️ Lives: %d" % GameState.attempts_left
+		ui_timer.text = "⏱️ Time: %d" % time_left
 
 func _toggle_pause_menu() -> void:
 	if level_finished:
@@ -161,3 +166,20 @@ func _advance_background_theme() -> void:
 	bg_glow_1.color = theme["glow_1"]
 	bg_glow_2.color = theme["glow_2"]
 	bg_grid.color = theme["grid"]
+
+func _apply_language() -> void:
+	var ar := GameState.current_language == "ar"
+	if ar:
+		ui_level.text = "%s | %s" % [str(level_data.name), str(level_data.difficulty)]
+		$CanvasLayer/PauseMenu/PauseTitle.text = "⏸️ ايقاف اللعبة"
+		$CanvasLayer/PauseMenu/PauseHint.text = "اختر الاجراء المناسب"
+		$CanvasLayer/PauseMenu/ResumeButton.text = "▶️ متابعة اللعب"
+		$CanvasLayer/PauseMenu/MapButton.text = "🗺️ العودة للخريطة"
+		$CanvasLayer/PauseMenu/LobbyButton.text = "🏠 العودة للوبي"
+	else:
+		ui_level.text = "Level %d | %s" % [GameState.current_level + 1, str(level_data.difficulty)]
+		$CanvasLayer/PauseMenu/PauseTitle.text = "⏸️ Game Paused"
+		$CanvasLayer/PauseMenu/PauseHint.text = "Choose an action"
+		$CanvasLayer/PauseMenu/ResumeButton.text = "▶️ Resume"
+		$CanvasLayer/PauseMenu/MapButton.text = "🗺️ Back To Map"
+		$CanvasLayer/PauseMenu/LobbyButton.text = "🏠 Back To Lobby"
