@@ -7,6 +7,9 @@ func _ready() -> void:
 	_ensure_input_bindings()
 	_apply_visual()
 
+func _ready() -> void:
+	_ensure_input_bindings()
+
 func _physics_process(_delta: float) -> void:
 	var input_dir := Vector2(
 		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
