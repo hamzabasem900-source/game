@@ -90,7 +90,7 @@ autowrap_mode = 2
 
 [node name="FeatureLabel" type="Label" parent="Panel/VBoxContainer"]
 layout_mode = 2
-text = "✨ طور اللعب: تحدّي زمني + 3 أرواح + فتح مستويات تدريجي"
+text = "✨ طور اللعب: تحدي زمني + 3 ارواح + فتح مستويات تدريجي"
 horizontal_alignment = 1
 add_theme_font_size_override/font_size = 14
 add_theme_colors/font_color = Color(1, 0.89, 0.55, 1)

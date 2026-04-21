@@ -2,6 +2,12 @@ extends Node
 
 var sound_enabled: bool = true
 var music_enabled: bool = true
+var lobby_music_enabled: bool = true
+var game_music_enabled: bool = true
+var pickup_enabled: bool = true
+var danger_enabled: bool = true
+var win_enabled: bool = true
+var game_over_enabled: bool = true
 
 @onready var lobby_player: AudioStreamPlayer = AudioStreamPlayer.new()
 @onready var game_player: AudioStreamPlayer = AudioStreamPlayer.new()
@@ -60,7 +66,7 @@ func _ready() -> void:
 	_log_missing_streams()
 
 func play_lobby_loop() -> void:
-	if not music_enabled:
+	if not music_enabled or not lobby_music_enabled:
 		return
 	if game_player.playing:
 		game_player.stop()
@@ -72,7 +78,7 @@ func stop_lobby_loop() -> void:
 		lobby_player.stop()
 
 func play_game_loop() -> void:
-	if not music_enabled:
+	if not music_enabled or not game_music_enabled:
 		return
 	if lobby_player.playing:
 		lobby_player.stop()
@@ -84,15 +90,23 @@ func stop_game_loop() -> void:
 		game_player.stop()
 
 func play_gameplay_pickup() -> void:
+	if not pickup_enabled:
+		return
 	_play_if_exists(pickup_player)
 
 func play_danger() -> void:
+	if not danger_enabled:
+		return
 	_play_if_exists(danger_player)
 
 func play_win() -> void:
+	if not win_enabled:
+		return
 	_play_if_exists(win_player)
 
 func play_game_over() -> void:
+	if not game_over_enabled:
+		return
 	_play_if_exists(game_over_player)
 
 func _load_first_existing(paths: Array) -> AudioStream:

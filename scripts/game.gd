@@ -79,7 +79,7 @@ func _on_collectible_collected(points: int) -> void:
 	if score_in_level >= target:
 		_show_results(true, false, target)
 		return
-	# العنصر الحالي لم يُحذف بعد في نفس الإطار، لذلك نتحقق من <= 1
+		# العنصر الحالي لم يحذف بعد في نفس الاطار، لذلك نتحقق من <= 1
 	if $Collectibles.get_child_count() <= 1:
 		_spawn_collectibles(RESPAWN_COLLECTIBLES)
 		_advance_background_theme()

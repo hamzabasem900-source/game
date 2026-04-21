@@ -3,7 +3,7 @@ extends Node
 const LEVELS := [
 	{"name": "المستوى 1", "time": 50, "target": 200, "collectibles": 14, "enemies": 2, "enemy_speed": 95.0, "difficulty": "سهل"},
 	{"name": "المستوى 2", "time": 42, "target": 260, "collectibles": 18, "enemies": 4, "enemy_speed": 140.0, "difficulty": "متوسط+"},
-	{"name": "المستوى 3", "time": 35, "target": 340, "collectibles": 22, "enemies": 6, "enemy_speed": 180.0, "difficulty": "صعب جدًا"}
+	{"name": "المستوى 3", "time": 35, "target": 340, "collectibles": 22, "enemies": 6, "enemy_speed": 180.0, "difficulty": "صعب جدا"}
 ]
 
 const MAX_ATTEMPTS := 3
@@ -14,6 +14,22 @@ var unlocked_level: int = 0
 var current_level: int = 0
 var levels_won: int = 0
 var last_result: Dictionary = {}
+var current_language: String = "ar"
+
+const UI_TEXT := {
+	"ar": {
+		"settings_title": "الاعدادات",
+		"lang_label": "اللغة: عربي",
+		"enabled": "مفعل",
+		"disabled": "معطل"
+	},
+	"en": {
+		"settings_title": "Settings",
+		"lang_label": "Language: English",
+		"enabled": "On",
+		"disabled": "Off"
+	}
+}
 
 func reset_run() -> void:
 	total_score = 0
@@ -53,3 +69,7 @@ func store_result(passed: bool, game_over: bool, level_score: int, target: int) 
 
 func restore_attempts() -> void:
 	attempts_left = MAX_ATTEMPTS
+
+func tr_text(key: String) -> String:
+	var lang_data: Dictionary = UI_TEXT.get(current_language, UI_TEXT["ar"])
+	return str(lang_data.get(key, key))

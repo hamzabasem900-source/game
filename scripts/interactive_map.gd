@@ -88,7 +88,7 @@ func _draw_connecting_lines() -> void:
 		var end_pos = level_positions[i + 1]
 		var mid = (start_pos + end_pos) / 2.0 + Vector2(0, -32.0 if i % 2 == 0 else 28.0)
 		
-		# تحديد لون الخط بناءً على حالة المستوى
+		# تحديد لون الخط بناء على حالة المستوى
 		var line_color: Color
 		if GameState.unlocked_level > i:
 			line_color = Color(0.28, 1.0, 0.54)  # أخضر فاتح
@@ -224,7 +224,7 @@ func _start_level(level_index: int) -> void:
 	get_tree().change_scene_to_file("res://scenes/game.tscn")
 
 func _update_button_states() -> void:
-	# تحديث حالات الأزرار بناءً على حالة اللعبة
+	# تحديث حالات الازرار بناء على حالة اللعبة
 	queue_redraw()
 
 func _update_status_label() -> void:
