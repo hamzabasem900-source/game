@@ -2,8 +2,7 @@ extends Node
 
 const LEVELS := [
 	{"name": "المستوى 1", "time": 50, "target": 100, "collectibles": 14, "enemies": 2, "enemy_speed": 95.0, "difficulty": "سهل"},
-	{"name": "المستوى 2", "time": 45, "target": 150, "collectibles": 17, "enemies": 3, "enemy_speed": 125.0, "difficulty": "متوسط"},
-	{"name": "المستوى 3", "time": 40, "target": 210, "collectibles": 20, "enemies": 4, "enemy_speed": 155.0, "difficulty": "صعب"}
+	{"name": "المستوى 2", "time": 42, "target": 165, "collectibles": 18, "enemies": 4, "enemy_speed": 140.0, "difficulty": "متوسط+"}
 ]
 
 const MAX_ATTEMPTS := 3

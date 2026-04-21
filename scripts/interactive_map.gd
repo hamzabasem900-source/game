@@ -13,6 +13,8 @@ var hovered_level: int = -1
 
 func _ready() -> void:
 	set_process_input(true)
+	$ColorRect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	$ColorRect.z_index = -100
 	_create_level_buttons()
 	_update_button_states()
 	_update_status_label()
@@ -58,6 +60,8 @@ func _process(delta: float) -> void:
 	queue_redraw()
 
 func _draw() -> void:
+	if level_positions.is_empty():
+		return
 	_draw_connecting_lines()
 	_draw_level_buttons()
 
