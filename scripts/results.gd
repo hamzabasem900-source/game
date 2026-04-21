@@ -1,10 +1,11 @@
 extends Control
 
 func _ready() -> void:
-	var passed: bool = bool(get_meta("passed", false))
-	var game_over: bool = bool(get_meta("game_over", false))
-	var level_score: int = int(get_meta("level_score", 0))
-	var target: int = int(get_meta("target", 0))
+	var result_data := GameState.last_result
+	var passed: bool = bool(result_data.get("passed", false))
+	var game_over: bool = bool(result_data.get("game_over", false))
+	var level_score: int = int(result_data.get("level_score", 0))
+	var target: int = int(result_data.get("target", 0))
 	
 	if game_over:
 		$Panel/VBoxContainer/TitleLabel.text = "💀 GAME OVER"
@@ -28,7 +29,7 @@ func _ready() -> void:
 	$Panel/VBoxContainer/MenuButton.pressed.connect(_on_menu_pressed)
 
 func _on_map_pressed() -> void:
-	var game_over: bool = bool(get_meta("game_over", false))
+	var game_over: bool = bool(GameState.last_result.get("game_over", false))
 	if game_over:
 		GameState.reset_run()
 		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
