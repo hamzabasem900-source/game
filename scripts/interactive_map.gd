@@ -117,13 +117,13 @@ func _draw_level_buttons() -> void:
 		# تحديد لون الزر
 		var button_color: Color
 		if is_locked:
-			button_color = Color(0.42, 0.44, 0.50)  # رمادي (مقفول)
+			button_color = Color(0.36, 0.40, 0.48)  # رمادي مزرق (مقفول)
 		elif is_completed:
-			button_color = Color(0.30, 0.88, 0.45)  # اخضر (مكتمل)
+			button_color = Color(0.18, 0.82, 0.72)  # تركواز (مكتمل)
 		elif is_current:
-			button_color = Color(1.0, 0.84, 0.20)  # اصفر (متاح)
+			button_color = Color(1.0, 0.63, 0.22)  # برتقالي ذهبي (المستوى الحالي)
 		else:
-			button_color = Color(0.95, 0.80, 0.22)  # اصفر
+			button_color = Color(0.35, 0.66, 1.0)  # ازرق مشرق (متاح)
 		
 		# تطبيق تأثير المرور فوق الزر
 		var scale_factor = 1.0
