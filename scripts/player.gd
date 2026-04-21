@@ -47,7 +47,7 @@ func _apply_visual() -> void:
 		if texture:
 			sprite.texture = texture
 			var base_size = max(texture.get_size().x, texture.get_size().y)
-			var target_size = 56.0
+			var target_size = 68.0
 			var scale_factor = target_size / max(1.0, base_size)
 			sprite.scale = Vector2.ONE * scale_factor
 			sprite.visible = true
