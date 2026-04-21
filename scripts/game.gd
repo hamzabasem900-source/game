@@ -8,6 +8,7 @@ var score_in_level: int = 0
 var time_left: int = 0
 var level_data: Dictionary
 var level_finished: bool = false
+var is_paused: bool = false
 
 @onready var ui_score: Label = $CanvasLayer/UI/ScoreLabel
 @onready var ui_attempts: Label = $CanvasLayer/UI/AttemptsLabel
@@ -21,13 +22,23 @@ func _ready() -> void:
 	player.add_to_group("player")
 	level_data = GameState.active_level_data()
 	AudioManager.play_game_loop()
+	$CanvasLayer.process_mode = Node.PROCESS_MODE_ALWAYS
+	$CanvasLayer/PauseMenu.process_mode = Node.PROCESS_MODE_ALWAYS
 	time_left = int(level_data.time)
 	ui_level.text = "%s | %s" % [str(level_data.name), str(level_data.difficulty)]
 	_update_ui()
 	_spawn_collectibles(int(level_data.collectibles))
 	_spawn_enemies(int(level_data.enemies), float(level_data.enemy_speed))
 	countdown.timeout.connect(_on_countdown_timeout)
+	$CanvasLayer/PauseButton.pressed.connect(_toggle_pause_menu)
+	$CanvasLayer/PauseMenu/ResumeButton.pressed.connect(_resume_game)
+	$CanvasLayer/PauseMenu/MapButton.pressed.connect(_go_to_map)
+	$CanvasLayer/PauseMenu/LobbyButton.pressed.connect(_go_to_lobby)
 	countdown.start()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		_toggle_pause_menu()
 
 func _spawn_collectibles(amount: int) -> void:
 	for i in amount:
@@ -89,6 +100,7 @@ func _show_results(passed: bool, game_over: bool, target: int = -1) -> void:
 	if level_finished:
 		return
 	level_finished = true
+	_set_paused(false)
 	countdown.stop()
 	if passed:
 		GameState.add_score(score_in_level)
@@ -107,3 +119,26 @@ func _update_ui() -> void:
 	ui_score.text = "💰 النقاط: %d / %d" % [score_in_level, int(level_data.target)]
 	ui_attempts.text = "❤️ الأرواح: %d" % GameState.attempts_left
 	ui_timer.text = "⏱️ الوقت: %d" % time_left
+
+func _toggle_pause_menu() -> void:
+	if level_finished:
+		return
+	_set_paused(not is_paused)
+
+func _resume_game() -> void:
+	_set_paused(false)
+
+func _go_to_map() -> void:
+	_set_paused(false)
+	AudioManager.stop_game_loop()
+	get_tree().change_scene_to_file("res://scenes/interactive_map.tscn")
+
+func _go_to_lobby() -> void:
+	_set_paused(false)
+	AudioManager.stop_game_loop()
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+
+func _set_paused(value: bool) -> void:
+	is_paused = value
+	get_tree().paused = value
+	$CanvasLayer/PauseMenu.visible = value
