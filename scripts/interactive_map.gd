@@ -158,10 +158,17 @@ func _draw_level_buttons() -> void:
 			_draw_pin_icon(pos + Vector2(0, -60))
 
 func _draw_lock_icon(pos: Vector2) -> void:
-	var font = get_theme_font("font")
-	if not font:
-		font = ThemeDB.fallback_font
-	draw_string(font, pos + Vector2(-11, 9), "🔒", HORIZONTAL_ALIGNMENT_LEFT, -1, 24, Color(0.25, 0.2, 0.08, 1))
+	# رسم قفل واضح ومتناسق في منتصف الدائرة
+	var body_size = Vector2(18, 14)
+	var body_pos = pos + Vector2(-body_size.x / 2.0, 2)
+	var body_rect = Rect2(body_pos, body_size)
+	draw_rect(body_rect, Color(0.14, 0.18, 0.30, 0.95), true)
+	draw_rect(body_rect, Color(0.95, 0.83, 0.30, 1), false, 1.8)
+	var shackle_radius = 6.0
+	var shackle_center = pos + Vector2(0, 1)
+	draw_arc(shackle_center, shackle_radius, PI, TAU, 20, Color(0.14, 0.18, 0.30, 0.95), 3.2)
+	draw_arc(shackle_center, shackle_radius + 0.9, PI, TAU, 20, Color(0.95, 0.83, 0.30, 1), 1.3)
+	draw_circle(pos + Vector2(0, 9), 1.8, Color(0.95, 0.83, 0.30, 1))
 
 func _draw_checkmark(pos: Vector2) -> void:
 	# رسم علامة صح واضحة في منتصف الدائرة
@@ -174,15 +181,6 @@ func _draw_checkmark(pos: Vector2) -> void:
 	draw_line(check_mid, check_end, Color(0.02, 0.35, 0.08, 0.9), 5.0)
 	draw_line(check_start, check_mid, Color(0.85, 1.0, 0.88, 1), 2.8)
 	draw_line(check_mid, check_end, Color(0.85, 1.0, 0.88, 1), 2.8)
-
-func _draw_pin_icon(pos: Vector2) -> void:
-	draw_circle(pos, 10, Color(1, 0.2, 0.28, 1))
-	draw_circle(pos, 4, Color(1, 1, 1, 0.95))
-	draw_polygon(PackedVector2Array([
-		pos + Vector2(0, 18),
-		pos + Vector2(-6, 8),
-		pos + Vector2(6, 8)
-	]), [Color(1, 0.2, 0.28, 1)])
 
 func _draw_pin_icon(pos: Vector2) -> void:
 	draw_circle(pos, 10, Color(1, 0.2, 0.28, 1))
