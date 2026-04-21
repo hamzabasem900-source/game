@@ -1,6 +1,11 @@
 extends CharacterBody2D
 
 @export var move_speed: float = 250.0
+@export var player_texture_path: String = "res://assets/sprites/rocket.png"
+
+func _ready() -> void:
+	_ensure_input_bindings()
+	_apply_visual()
 
 func _physics_process(_delta: float) -> void:
 	var input_dir := Vector2(
@@ -13,3 +18,40 @@ func _physics_process(_delta: float) -> void:
 	var viewport_rect := get_viewport_rect()
 	global_position.x = clamp(global_position.x, 24.0, viewport_rect.size.x - 24.0)
 	global_position.y = clamp(global_position.y, 24.0, viewport_rect.size.y - 24.0)
+
+func _ensure_input_bindings() -> void:
+	_bind_key("move_left", KEY_A)
+	_bind_key("move_right", KEY_D)
+	_bind_key("move_up", KEY_W)
+	_bind_key("move_down", KEY_S)
+	_bind_key("move_left", KEY_LEFT)
+	_bind_key("move_right", KEY_RIGHT)
+	_bind_key("move_up", KEY_UP)
+	_bind_key("move_down", KEY_DOWN)
+
+func _bind_key(action: StringName, key: Key) -> void:
+	if not InputMap.has_action(action):
+		InputMap.add_action(action)
+	for event in InputMap.action_get_events(action):
+		if event is InputEventKey and event.keycode == key:
+			return
+	var input_event := InputEventKey.new()
+	input_event.keycode = key
+	InputMap.action_add_event(action, input_event)
+
+func _apply_visual() -> void:
+	var sprite: Sprite2D = $Sprite2D
+	var fallback_body: Polygon2D = $Body
+	if ResourceLoader.exists(player_texture_path):
+		var texture := load(player_texture_path) as Texture2D
+		if texture:
+			sprite.texture = texture
+			var base_size = max(texture.get_size().x, texture.get_size().y)
+			var target_size = 68.0
+			var scale_factor = target_size / max(1.0, base_size)
+			sprite.scale = Vector2.ONE * scale_factor
+			sprite.visible = true
+			fallback_body.visible = false
+			return
+	sprite.visible = false
+	fallback_body.visible = true
