@@ -64,7 +64,7 @@ size_flags_vertical = 3
 bbcode_enabled = true
 text = "[right]
 ⌨️ التحكم:
-  • حرّك الشخصية بأسهم الاتجاه أو WASD
+  • حرك الشخصية باسهم الاتجاه او WASD
 
 🎯 الهدف:
   • اجمع العناصر الصفراء 💛 لزيادة النقاط
@@ -85,4 +85,3 @@ add_theme_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 layout_mode = 2
 text = "◀️ عودة للقائمة"
 add_theme_font_size_override/font_size = 16
-
