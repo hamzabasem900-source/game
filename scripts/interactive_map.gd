@@ -184,6 +184,15 @@ func _draw_pin_icon(pos: Vector2) -> void:
 		pos + Vector2(6, 8)
 	]), [Color(1, 0.2, 0.28, 1)])
 
+func _draw_pin_icon(pos: Vector2) -> void:
+	draw_circle(pos, 10, Color(1, 0.2, 0.28, 1))
+	draw_circle(pos, 4, Color(1, 1, 1, 0.95))
+	draw_polygon(PackedVector2Array([
+		pos + Vector2(0, 18),
+		pos + Vector2(-6, 8),
+		pos + Vector2(6, 8)
+	]), [Color(1, 0.2, 0.28, 1)])
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		_update_hovered_level(event.position)
